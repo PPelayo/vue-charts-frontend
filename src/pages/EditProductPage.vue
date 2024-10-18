@@ -89,7 +89,7 @@ const handleSubmit = (e) => {
 </script>
 
 <template>
-    <h3 v-if="loading" class="w-full h-full flex items-center justify-center">Cargando...</h3>
+    <h3 v-if="loading" class="w-full h-full flex items-center justify-center font-bold">Cargando...</h3>
     <section v-else @submit="handleSubmit" class="w-full h-full flex flex-col items-center gap-2 px-4">
         <h1 class="mt-6 text-2xl font-bold uppercase">Edita un producto</h1>
         <form
