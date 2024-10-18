@@ -1,9 +1,6 @@
-<script setup lang="ts">
-import { defineComponent } from 'vue';
+<script setup>
 
-defineComponent({
-  name: 'FluentDelete28Regular',
-});
+
 </script>
 <template>
 	<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 28 28">
