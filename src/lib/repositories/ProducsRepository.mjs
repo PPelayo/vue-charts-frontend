@@ -1,5 +1,5 @@
-import DataResult from "./model/DataResult.mjs"
-import axiosClient from "./model/AxiosClient.mjs"
+import DataResult from "../model/DataResult.mjs"
+import axiosClient from "../model/AxiosClient.mjs"
 import { AxiosError } from "axios"
 
 class ProductsRepository {

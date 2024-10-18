@@ -3,7 +3,7 @@ import { onMounted, ref, watchEffect } from 'vue';
 import TextField from '../components/TextField.vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-import { productsRepository } from '../lib/ProducsRepository.mjs';
+import { productsRepository } from '../lib/repositories/ProducsRepository.mjs';
 
 defineProps(['productId'])
 

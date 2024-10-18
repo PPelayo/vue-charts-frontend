@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from 'vue';
 import EditIcon from '../components/icons/EditIcon.vue';
 import DeleteIcon from '../components/icons/DeleteIcon.vue';
 import { RouterLink } from 'vue-router';
-import { productsRepository } from '../lib/ProducsRepository.mjs';
+import { productsRepository } from '../lib/repositories/ProducsRepository.mjs';
 
 const products = ref([])
 const loading = ref(true)

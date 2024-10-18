@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { productsRepository } from '../lib/ProducsRepository.mjs';
+import { productsRepository } from '../lib/repositories/ProducsRepository.mjs';
 import Loader from '../components/Loader.vue';
 import ProductCard from '../components/ProductCard.vue';
 import AddIcon from '../components/icons/AddIcon.vue';
