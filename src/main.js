@@ -3,20 +3,11 @@ import './index.css'
 import App from './App.vue'
 import { createRouter } from 'vue-router'
 import { createWebHistory } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-import Home from './components/Home.vue'
 import ProductsPage from './pages/ProductsPage.vue'
 import EditProductPage from './pages/EditProductPage.vue'
+import SalesPage from './pages/SalesPage.vue'
 
 const routes = [
-    {
-        path: '/hello-world',
-        component: HelloWorld
-    },
-    {
-        path: '/a',
-        component: Home
-    },
     {
         path: '/products',
         component : ProductsPage
@@ -24,6 +15,10 @@ const routes = [
     {
         path: '/products/edit',
         component: EditProductPage
+    },
+    {
+        path: '/sales',
+        component: SalesPage
     }
 ]
   

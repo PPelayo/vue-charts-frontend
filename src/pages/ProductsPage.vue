@@ -4,6 +4,7 @@ import EditIcon from '../components/icons/EditIcon.vue';
 import DeleteIcon from '../components/icons/DeleteIcon.vue';
 import { RouterLink } from 'vue-router';
 import axios from 'axios';
+import { productsRepository } from '../lib/ProducsRepository.mjs';
 
 const products = ref([])
 const loading = ref(true)
@@ -13,16 +14,14 @@ onMounted(() => {
 })
 
 const downloadData = () => {
-    try {
-        axios.get(`${import.meta.env.VITE_API_URL}/products`)
-            .then(res => {
-                products.value = res.data
-            })
-    } catch (e) {
-        alert('Error descargando los datos')
-    } finally {
-        loading.value = false
-    }
+    productsRepository.getAll()
+    .then(result => {
+        result.handle({
+            onSuccess: (data) => products.value = data,
+            onFailure: (error) => alert(error),
+            onFinally: () => loading.value = false
+        })
+    })
 }
 
 const handleDelete = ({ productId }) => {
