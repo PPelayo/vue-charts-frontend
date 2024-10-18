@@ -3,6 +3,7 @@ import { onMounted, ref, watchEffect } from 'vue';
 import TextField from '../components/TextField.vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { productsRepository } from '../lib/ProducsRepository.mjs';
 
 defineProps(['productId'])
 
@@ -17,16 +18,14 @@ onMounted(() => {
         const productId = urlParams.get('productId')
         loading.value = true
 
-        try{
-            axios.get(`${import.meta.env.VITE_API_URL}/products/${productId}`)
-            .then(result => {
-                product.value = result.data
+        productsRepository.getById({ id: productId })
+            .then(res => {
+                res.handle({
+                    onSuccess: (data) => product.value = data,
+                    onFailure: (error) => alert(`Error al intentar recuperar el producto: ${error}`),
+                    onFinally: () => loading.value = false
+                })
             })
-        } catch(e) {
-            console.log(e)
-        } finally{
-            loading.value = false
-        }
         
     }
 })
@@ -45,15 +44,14 @@ const normalizeProduct = ({ name, price, category, stock }) => {
 }
 
 const saveProduct = ({ normalizedProduct }) => {
-    try {
-        axios.post(`${import.meta.env.VITE_API_URL}/products`, normalizedProduct)
-            .then(() => {
-                redirect()
+    productsRepository.create({ product: normalizedProduct})
+        .then(res => {
+            res.handle({
+                onSuccess: () => redirect(),
+                onFailure: (er) => alert(er),
+                onFinally: () => loading.value = false
             })
-
-    } catch (e) {
-        alert('Error al guardar el producto', e.message)
-    }
+        })
 }
 
 const updateProduct = ({ normalizedProduct }) => {
@@ -61,14 +59,14 @@ const updateProduct = ({ normalizedProduct }) => {
         ...normalizedProduct,
         id: product.value.id
     }
-    try {
-        axios.put(`${import.meta.env.VITE_API_URL}/products/${product.value.id}`, productToUpdate)
-            .then(() => {
-                redirect()
+    productsRepository.update({ product: productToUpdate})
+        .then(res => {
+            res.handle({
+                onSuccess: () => redirect(),
+                onFailure: (er) => alert(er),
+                onFinally: () => loading.value = false
             })
-    } catch (e) {
-        alert('Error al guardar el producto', e.message)
-    }
+        })
 }
 
 const handleSubmit = (e) => {

@@ -3,7 +3,6 @@ import { onMounted, ref, watch } from 'vue';
 import EditIcon from '../components/icons/EditIcon.vue';
 import DeleteIcon from '../components/icons/DeleteIcon.vue';
 import { RouterLink } from 'vue-router';
-import axios from 'axios';
 import { productsRepository } from '../lib/ProducsRepository.mjs';
 
 const products = ref([])
@@ -25,18 +24,13 @@ const downloadData = () => {
 }
 
 const handleDelete = ({ productId }) => {
-    try {
-        if (confirm('¿Desea eliminar el registro?')) {
-            axios.delete(`${import.meta.env.VITE_API_URL}/products/${productId}`)
-                .then(() => {
-                    downloadData()
-                })
-        }
-
-    } catch (e) {
-        console.log('Error borrando:', e);
-        alert('Hubo un error eliminando el registro')
-    }
+    productsRepository.delete({ id: productId })
+        .then(res => {
+            res.handle({
+                onSuccess: () => downloadData(),
+                onFailure: () => alert('Error al intentar eliminar el registro')
+            })
+        })
 }
 
 </script>
