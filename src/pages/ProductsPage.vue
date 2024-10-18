@@ -54,8 +54,8 @@ const handleDelete = ({ productId }) => {
                         <th class="px-4 py-2">EDICIÓN</th>
                     </tr>
                 </thead>
-                <tbody v-for="product in products" :key="product.id">
-                    <tr>
+                <tbody>
+                    <tr v-for="product in products" :key="product.id">
                         <td class="text-center">{{ product.name }}</td>
                         <td class="text-center">{{ Number.parseFloat(product.price).toFixed(2) }}</td>
                         <td class="text-center">{{ Number.parseFloat(product.stock).toFixed(2) }}</td>
