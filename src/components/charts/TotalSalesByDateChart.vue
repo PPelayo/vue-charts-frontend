@@ -92,35 +92,15 @@ watchEffect(() => {
     fetchData({ startDate: startDate.value, endDate: endDate.value })
 })
 
-watchEffect(() => {
-    console.log('Fetchet data', totalsData.value);
-    console.log('startDate', startDate.value.format(dateFormat));
-    console.log('endDate', endDate.value.format(dateFormat));
-    
-
-
-    console.log('diff days', daysFromDates.value);
-    console.log('Mapped values', daysFromDates.value.map(d => {
-        const totalWrapper = totalsData.value.find(({ date }) => date === d)
-
-        return totalWrapper ? totalWrapper.totals : "0"
-    }));
-
-    console.log('options', options.value);
-    
-    
-    
-})
-
 
 </script>
 
 
 <template>
-    <section class="w-full h-fit my-2 border rounded-xl shadow-lg p-4 min-w-[600px] overflow-auto">
+    <section class="w-full h-fit my-2 border rounded-xl shadow-lg p-4  overflow-auto">
         <Loader :loading="loading">
             <main>
-                <Chart :option="options" class="h-[800px]" autorosize></Chart>
+                <Chart :option="options" class="h-[800px] min-w-[600px]" autorosize></Chart>
             </main>
         </Loader>
     </section>
