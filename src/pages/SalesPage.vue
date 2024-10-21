@@ -39,6 +39,9 @@ const addedProductList = computed(() => {
         })
 })
 
+const totalProducts = computed(() => {
+    return addedProductList.value.reduce((acc, curr) => acc + curr.total, 0)
+})
 
 const addProduct = (product) => {
     const actualQuantity = productsSelecteds.value.get(product.id) ?? 0
@@ -105,17 +108,16 @@ const handleCharge = () => {
 
 <template>
     <Loader :loading="loading" />
-    <div class="grid grid-cols-12 h-full">
-        <section class="h-full col-span-8 grid grid-cols-3 auto-rows-min gap-3 p-2">
+    <div class="grid md:grid-cols-12 flex-1 grid-rows-12 md:grid-rows-none">
+        <section class="h-full md:col-span-8 grid grid-cols-3 auto-rows-min gap-3 p-2 row-span-6 md:row-span-1 overflow-auto">
             <ProductCard v-for="product in products" :key="product.id" class="col-span-1 min-w-24 h-32"
                 :product="product" @click="() => addProduct(product)">
             </ProductCard>
         </section>
 
-        <section class="col-span-4 flex flex-col border-l bg-gray-300">
+        <section class="md:col-span-4 flex flex-col border-l bg-gray-300 row-span-6 md:row-span-1">
             <div class="flex-1 w-full overflow-auto">
-
-                <table class="w-full">
+                <table class="w-full relative">
                     <thead class="bg-orange-300">
                         <tr>
                             <th class="px-4 py-2">PRODUCTO</th>
@@ -134,6 +136,10 @@ const handleCharge = () => {
                     </tbody>
                 </table>
             </div>
+            <footer class="flex justify-between px-2 text-xl font-bold uppercase">
+                <span>Total:</span>
+                <span>{{ totalProducts }} €</span>
+            </footer>
             <section class="grid grid-cols-4 gap-1 p-1">
                 <button class="border rounded-xl px-4 py-2 bg-blue-400 text-center flex items-center justify-center hover:bg-blue-500 transition-colors"
                     @click="handleAddProduct">

@@ -6,10 +6,10 @@ import CustomHeader from './components/Headers/CustomHeader.vue';
 </script>
 
 <template>
-  <div class="h-full flex flex-col">
+  <!-- <div class="flex flex-col flex-1 flex-nowrap"> -->
     <CustomHeader/>
-    <main class="flex-1">
+    <main class="flex-grow h-0 overflow-hidden flex">
       <RouterView/>
     </main>
-  </div>
+  <!-- </div> -->
 </template>
