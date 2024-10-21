@@ -4,7 +4,10 @@ import TotalSalesByDateChart from '../components/charts/TotalSalesByDateChart.vu
 </script>
 
 <template>
-    <h1>Aqui va mi pagina de charts</h1>
+    <div class="w-full flex items-center justify-center">
+        <main class="flex self-center flex-col items-center max-w-7xl justify-center w-full">
+            <TotalSalesByDateChart></TotalSalesByDateChart>
 
-    <TotalSalesByDateChart></TotalSalesByDateChart>
+        </main>
+    </div>
 </template>
