@@ -1,6 +1,6 @@
 <script setup>
 import { RouterView } from 'vue-router';
-import CustomHeader from './components/CustomHeader.vue';
+import CustomHeader from './components/Headers/CustomHeader.vue';
 
 
 </script>
