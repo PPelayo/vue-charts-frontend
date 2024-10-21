@@ -1,8 +1,27 @@
 <script setup>
-import { onMounted, ref, watch, watchEffect } from 'vue';
+import { computed, provide, ref, watchEffect } from 'vue';
 import { salesRepository } from '../../lib/repositories/SalesRepository.mjs';
 import dayjs from 'dayjs';
 import Loader from '../Loader.vue';
+import { BarChart } from 'echarts/charts';
+import { CanvasRenderer } from 'echarts/renderers';
+import { use } from 'echarts/core';
+import Chart, { THEME_KEY } from 'vue-echarts';
+import { GridComponent, TitleComponent } from 'echarts/components';
+
+use([
+    CanvasRenderer,
+    BarChart,
+    TitleComponent,
+    GridComponent,
+    // TooltipComponent,
+    // LegendComponent,
+])
+
+provide(THEME_KEY, 'light')
+
+const dateFormat = 'YYYY-MM-DD'
+
 
 const loading = ref(false)
 const totalsData = ref([])
@@ -22,26 +41,86 @@ const fetchData = async ({ startDate, endDate }) => {
     })
 }
 
+const daysFromDates = computed(() => {
+
+    const days = []
+    days.push(startDate.value.format(dateFormat))
+
+    const diffInDays = endDate.value.diff(startDate.value, 'day')
+    for (let i = 1; i < diffInDays+1; i++) {
+        days.push(startDate.value.add(i, 'day').format(dateFormat))
+    }
+ 
+   return days
+})
+
+var totalsMapped = computed(() => {
+    return daysFromDates.value.map(d => {
+        const totalWrapper = totalsData.value.find(({ date }) => date === d)
+
+        return totalWrapper ? totalWrapper.totals : "0"
+    })
+})
+
+const options = computed(() => {
+    return {
+        title: {
+            text: 'TOTAL DE VENTAS POR DIAS',
+            left: 'center'
+        },
+        xAxis: {
+            type: 'category',
+            data: daysFromDates.value,
+            name: 'Días'
+        },
+        yAxis : {
+            type: 'value',
+            name: 'Total de ventas',
+            interval: 50
+        },
+        series : [
+            {
+                type: 'bar',
+                data: totalsMapped.value
+            }
+        ]
+    }
+})
+
+
 watchEffect(() => {
     fetchData({ startDate: startDate.value, endDate: endDate.value })
 })
 
 watchEffect(() => {
     console.log('Fetchet data', totalsData.value);
+    console.log('startDate', startDate.value.format(dateFormat));
+    console.log('endDate', endDate.value.format(dateFormat));
+    
+
+
+    console.log('diff days', daysFromDates.value);
+    console.log('Mapped values', daysFromDates.value.map(d => {
+        const totalWrapper = totalsData.value.find(({ date }) => date === d)
+
+        return totalWrapper ? totalWrapper.totals : "0"
+    }));
+
+    console.log('options', options.value);
+    
+    
     
 })
+
+
 </script>
 
 
 <template>
-    <section class="w-full border-2 shadow-2xl p-4">
-        <header>
-            <h1 class="text-2xl font-semibold text-pretty uppercase mb-3">Total de ventas por días</h1>
-        </header>
-
+    <section class="w-full h-fit my-2 border rounded-xl shadow-lg p-4 min-w-[600px] overflow-auto">
         <Loader :loading="loading">
             <main>
-                <div class="w-full h-96 border">Aqui va mi chart</div>
+                <Chart :option="options" class="h-[800px]" autorosize></Chart>
             </main>
         </Loader>
     </section>
