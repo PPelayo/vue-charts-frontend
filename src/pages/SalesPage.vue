@@ -5,6 +5,7 @@ import Loader from '../components/Loader.vue';
 import ProductCard from '../components/ProductCard.vue';
 import AddIcon from '../components/icons/AddIcon.vue';
 import MinusIcon from '../components/icons/MinusIcon.vue';
+import { salesRepository } from '../lib/repositories/SalesRepository.mjs';
 
 
 const loading = ref(true)
@@ -12,6 +13,7 @@ const products = ref([])
 const productsSelecteds = ref(new Map())
 const productSelectId = ref(-1)
 
+const processingCharge = ref(false)
 
 onMounted(() => {
     productsRepository.getAll()
@@ -81,7 +83,20 @@ const handleSelectProduct = (product) => {
 }
 
 const handleCharge = () => {
-    
+    processingCharge.value = true
+
+    const sales = addedProductList.value.map(sale => {
+        return {
+            productId: sale.id,
+            quantity : sale.quantity
+        }
+    })
+    salesRepository.createSales({ productsIdsAndQuantities: sales })
+        .then(() => {
+            productSelectId.value = -1
+            productsSelecteds.value = new Map()
+            processingCharge.value = false
+        })
 }
 
 </script>
@@ -128,8 +143,10 @@ const handleCharge = () => {
                     @click="handleDeleteProduct">
                     <MinusIcon class="w-8 h-auto" />
                 </button>
-                <button 
-                class="col-span-2 bg-orange-400 rounded-2xl transition-colors hover:bg-orange-500 font-bold text-md uppercase">Cobrar</button>
+                <button
+                @click="handleCharge" 
+                :disabled="processingCharge"
+                class="col-span-2 bg-orange-400 rounded-2xl transition-colors hover:bg-orange-500 font-bold text-md uppercase disabled:bg-opacity-50 disabled:cursor-not-allowed">Cobrar</button>
             </section>
         </section>
     </div>

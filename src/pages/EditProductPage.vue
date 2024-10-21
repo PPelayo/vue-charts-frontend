@@ -92,9 +92,9 @@ const handleSubmit = (e) => {
         <h1 class="mt-6 text-2xl font-bold uppercase">Edita un producto</h1>
         <form
             class="mx-auto w-full flex flex-col gap-2 p-4 max-w-5xl border-2 bg-orange-300 rounded-2xl overflow-hidden shadow-lg">
-            <TextField type="text" label="Nombre:" name="name" required :defaultValue="product ? product.name : ''" min="5"></TextField>
+            <TextField type="text" label="Nombre:" name="name" required :defaultValue="product ? product.name : ''" min="1"></TextField>
             <TextField type="number" label="Precio:" name="price" required :defaultValue="product ? product.price : 0" min="0"></TextField>
-            <TextField type="text" label="Categoria:" name="category" required :defaultValue="product ? product.category : ''" min="5"></TextField>
+            <TextField type="text" label="Categoria:" name="category" required :defaultValue="product ? product.category : ''" min="1"></TextField>
             <TextField type="number" label="Stock:" name="stock" required :defaultValue="product ? product.stock : 0"></TextField>
 
             <footer class="flex justify-end px-3">
