@@ -1,7 +1,6 @@
 <script setup>
-import { computed, provide, ref, watchEffect } from 'vue';
+import { computed, provide, ref, toRef, watchEffect } from 'vue';
 import { salesRepository } from '../../lib/repositories/SalesRepository.mjs';
-import dayjs from 'dayjs';
 import Loader from '../Loader.vue';
 import { BarChart } from 'echarts/charts';
 import { CanvasRenderer } from 'echarts/renderers';
@@ -9,13 +8,22 @@ import { use } from 'echarts/core';
 import Chart, { THEME_KEY } from 'vue-echarts';
 import { GridComponent, TitleComponent } from 'echarts/components';
 
+
+const props = defineProps({
+    startDate: {
+        type: Object
+    },
+    endDate: {
+        type: Object
+    }
+})
+
+
 use([
     CanvasRenderer,
     BarChart,
     TitleComponent,
     GridComponent,
-    // TooltipComponent,
-    // LegendComponent,
 ])
 
 provide(THEME_KEY, 'light')
@@ -26,9 +34,6 @@ const dateFormat = 'YYYY-MM-DD'
 const loading = ref(false)
 const totalsData = ref([])
 const error = ref(null)
-
-const startDate = ref(dayjs().add(-7, 'day'))
-const endDate = ref(dayjs())
 
 const fetchData = async ({ startDate, endDate }) => {
     loading.value = true
@@ -43,12 +48,14 @@ const fetchData = async ({ startDate, endDate }) => {
 
 const daysFromDates = computed(() => {
 
-    const days = []
-    days.push(startDate.value.format(dateFormat))
+    const { startDate, endDate } = props
 
-    const diffInDays = endDate.value.diff(startDate.value, 'day')
+    const days = []
+    days.push(startDate.format(dateFormat))
+
+    const diffInDays = endDate.diff(startDate, 'day')
     for (let i = 1; i < diffInDays+1; i++) {
-        days.push(startDate.value.add(i, 'day').format(dateFormat))
+        days.push(startDate.add(i, 'day').format(dateFormat))
     }
  
    return days
@@ -89,7 +96,9 @@ const options = computed(() => {
 
 
 watchEffect(() => {
-    fetchData({ startDate: startDate.value, endDate: endDate.value })
+    console.log(props.startDate, props.endDate);
+    
+    fetchData({ startDate: props.startDate, endDate: props.endDate })
 })
 
 
@@ -97,11 +106,9 @@ watchEffect(() => {
 
 
 <template>
-    <section class="w-full h-fit my-2 border rounded-xl shadow-lg p-4  overflow-auto">
+    <article class="w-full h-fit my-2 border rounded-xl shadow-lg p-4  overflow-auto">
         <Loader :loading="loading">
-            <main>
-                <Chart :option="options" class="h-[800px] min-w-[600px]" autorosize></Chart>
-            </main>
+            <Chart :option="options" class="h-[800px] min-w-[600px]" autorosize></Chart>
         </Loader>
-    </section>
+    </article>
 </template>
