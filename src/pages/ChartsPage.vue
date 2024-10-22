@@ -34,9 +34,9 @@ watchEffect(() => {
 </script>
 
 <template>
-    <div class="w-full flex items-center justify-center">
+    <div class="w-full h-full flex justify-center overflow-auto">
         <main
-            class="h-full flex flex-1 self-center flex-col items-center max-w-7xl justify-center w-full p-4 overflow-auto">
+            class="h-min flex flex-col items-center max-w-7xl justify-center w-full p-4">
             <VDateInput class="w-full" v-model="dateTimeModel" label="Selecciona las fechas" multiple="range"></VDateInput>
 
             <TotalSalesByDateChart :startDate="startDate" :endDate="endDate" />

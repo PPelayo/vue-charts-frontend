@@ -8,7 +8,7 @@ import CustomHeader from './components/Headers/CustomHeader.vue';
 <template>
   <!-- <div class="flex flex-col flex-1 flex-nowrap"> -->
     <CustomHeader/>
-    <main class="flex-grow h-0 overflow-hidden flex">
+    <main class="overflow-hidden flex flex-1">
       <RouterView/>
     </main>
   <!-- </div> -->

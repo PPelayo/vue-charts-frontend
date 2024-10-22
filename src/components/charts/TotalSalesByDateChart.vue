@@ -106,7 +106,7 @@ watchEffect(() => {
 
 
 <template>
-    <article class="w-full h-fit my-2 border rounded-xl shadow-lg p-4  overflow-auto">
+    <article class="w-full h-fit min-h-[400px] my-2 border rounded-xl shadow-lg p-4  overflow-auto">
         <Loader :loading="loading">
             <Chart :option="options" class="h-[800px] min-w-[600px]" autorosize></Chart>
         </Loader>
